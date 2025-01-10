@@ -40,6 +40,7 @@ public class PlayerMovements : MonoBehaviour
     [SerializeField] private GameObject playerDisplay;
     [SerializeField] private GameObject vfxPrefab;
     [SerializeField] private GameObject eyes;
+    [SerializeField] private float eyeSpeed;
 
     private Rigidbody2D _rb;
 
@@ -117,13 +118,15 @@ public class PlayerMovements : MonoBehaviour
             playerDisplay.transform.localScale = baseScale;
         }
 
-        if (Mathf.Abs(eyes.transform.localPosition.x - goalEyesX) >= 0.1f)
+        if (Mathf.Abs(eyes.transform.localPosition.x - goalEyesX) >= 0.05f)
         {
             float a = goalEyesX - eyes.transform.localPosition.x;
+            eyes.transform.localPosition = new Vector3(eyes.transform.localPosition.x + eyeSpeed * Mathf.Sign(a) * Time.deltaTime, 0.2f, 0);
         }
-
-
-        eyes.transform.localPosition = new Vector3(goalEyesX, 0.2f, 0);
+        else
+        {
+            eyes.transform.localPosition = new Vector3(goalEyesX, 0.2f, 0);
+        }
     }
 
     private void FixedUpdate()
@@ -169,7 +172,6 @@ public class PlayerMovements : MonoBehaviour
         else if (_rb.velocity.x < -1f)
         {
             goalEyesX = -0.25f;
-            Debug.Log("Right" + _rb.velocity.x);
         }
 
         if (visualEffectObject != null)
