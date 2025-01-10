@@ -41,21 +41,23 @@ public class PlayerMovements : MonoBehaviour
     [SerializeField] private Vector3 maxStretch;
     [SerializeField] private float velForMaxStretch;
     [SerializeField] private GameObject playerDisplay;
-    [SerializeField] private GameObject VisualEffectObject;
-    [SerializeField] private GameObject staticObject;
+    [SerializeField] private GameObject vfxPrefab;
 
     private Rigidbody2D _rb;
 
     private float lastGroundTime;
     private float lastJumpTime;
     private float jumpInputBuffer;
-    private float lastLandingTime;
 
     private bool isJumping;
     private bool isFalling;
 
     private Vector3 baseScale;
-    private VisualEffect VisualEffect;
+
+    private GameObject VisualEffectObject;
+    private GameObject VisualEffectObjectBis;
+    private float vfxTime;
+    private float vfxTimeBis;
 
     private void Awake()
     {
@@ -64,8 +66,6 @@ public class PlayerMovements : MonoBehaviour
 
         _inputActions = new Controls();
         baseScale = playerDisplay.transform.localScale;
-        VisualEffect = VisualEffectObject.GetComponent<VisualEffect>();
-        VisualEffect.SetFloat("Lifetime", 0);
     }
 
     private void OnEnable()
@@ -123,7 +123,8 @@ public class PlayerMovements : MonoBehaviour
         lastGroundTime -= Time.fixedDeltaTime;
         lastJumpTime -= Time.fixedDeltaTime;
         jumpInputBuffer -= Time.fixedDeltaTime;
-        lastLandingTime -= Time.fixedDeltaTime;
+        vfxTime -= Time.fixedDeltaTime;
+        vfxTimeBis -= Time.fixedDeltaTime;
 
         if (CheckGround())
         {
@@ -131,9 +132,7 @@ public class PlayerMovements : MonoBehaviour
             if (isJumping && lastJumpTime < -0.1f)
             {
                 isJumping = false;
-                lastLandingTime = 0;
-                VisualEffect.SetFloat("Lifetime", 0.5f);
-                VisualEffectObject.transform.parent = staticObject.transform;
+                PlayVFX();
 
                 if (jumpInputBuffer >= 0)
                 {
@@ -144,9 +143,7 @@ public class PlayerMovements : MonoBehaviour
             else if (isFalling)
             {
                 isFalling = false;
-                lastLandingTime = 0;
-                VisualEffect.SetFloat("Lifetime", 0.5f);
-                VisualEffectObject.transform.parent = staticObject.transform;
+                PlayVFX();
             }
         }
         else
@@ -156,16 +153,33 @@ public class PlayerMovements : MonoBehaviour
                 isFalling = true;
             }
         }
-        
-        if (lastLandingTime <= -0.15f)
+
+        if (VisualEffectObject != null)
         {
-            VisualEffect.SetFloat("Lifetime", 0);
+            if (vfxTime <= -0.15f)
+            {
+                VisualEffectObject.GetComponent<VisualEffect>().SetFloat("Lifetime", 0);
+            }
+
+            if (vfxTime <= -0.65f)
+            {
+                Destroy(VisualEffectObject);
+                VisualEffectObject = null;
+            }
         }
 
-        if (lastLandingTime <= -0.65f)
+        if (VisualEffectObjectBis != null)
         {
-            VisualEffectObject.transform.parent = transform;
-            VisualEffectObject.transform.localPosition = new Vector3(0, -0.5f, 0);
+            if (vfxTimeBis <= -0.15f)
+            {
+                VisualEffectObjectBis.GetComponent<VisualEffect>().SetFloat("Lifetime", 0);
+            }
+
+            if (vfxTimeBis <= -0.65f)
+            {
+                Destroy(VisualEffectObjectBis);
+                VisualEffectObjectBis = null;
+            }
         }
 
         float targetSpeed = (moveDir == 0) ? 0 : Mathf.Sign(moveDir) * speed;
@@ -196,12 +210,7 @@ public class PlayerMovements : MonoBehaviour
             _rb.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
             lastJumpTime = 0;
             isJumping = true;
-            if(lastLandingTime <= -0.6f)
-            {
-                lastLandingTime = 0;
-                VisualEffect.SetFloat("Lifetime", 0.5f);
-                VisualEffectObject.transform.parent = staticObject.transform;
-            }
+            PlayVFX();
 
         } else
         {
@@ -214,6 +223,22 @@ public class PlayerMovements : MonoBehaviour
         if (isJumping && _rb.velocity.y > 0)
         {
             _rb.AddForce((1 - jumpCutMultiplier) * _rb.velocity.y * Vector2.down, ForceMode2D.Impulse);
+        }
+    }
+
+    private void PlayVFX()
+    {
+        if (vfxTime <= -0.65f && VisualEffectObject == null)
+        {
+            vfxTime = 0;
+            VisualEffectObject = Instantiate(vfxPrefab, transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
+            VisualEffectObject.GetComponent<VisualEffect>().SetFloat("Lifetime", 0.5f);
+        }
+        else if (vfxTimeBis <= -0.65f && VisualEffectObjectBis == null)
+        {
+            vfxTimeBis = 0;
+            VisualEffectObjectBis = Instantiate(vfxPrefab, transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
+            VisualEffectObjectBis.GetComponent<VisualEffect>().SetFloat("Lifetime", 0.5f);
         }
     }
 }
