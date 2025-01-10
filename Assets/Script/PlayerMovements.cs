@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
@@ -42,6 +39,7 @@ public class PlayerMovements : MonoBehaviour
     [SerializeField] private float velForMaxStretch;
     [SerializeField] private GameObject playerDisplay;
     [SerializeField] private GameObject vfxPrefab;
+    [SerializeField] private GameObject eyes;
 
     private Rigidbody2D _rb;
 
@@ -54,10 +52,12 @@ public class PlayerMovements : MonoBehaviour
 
     private Vector3 baseScale;
 
-    private GameObject VisualEffectObject;
-    private GameObject VisualEffectObjectBis;
+    private GameObject visualEffectObject;
+    private GameObject visualEffectObjectBis;
     private float vfxTime;
     private float vfxTimeBis;
+
+    private float goalEyesX;
 
     private void Awake()
     {
@@ -66,6 +66,8 @@ public class PlayerMovements : MonoBehaviour
 
         _inputActions = new Controls();
         baseScale = playerDisplay.transform.localScale;
+
+        goalEyesX = 0.25f;
     }
 
     private void OnEnable()
@@ -115,7 +117,13 @@ public class PlayerMovements : MonoBehaviour
             playerDisplay.transform.localScale = baseScale;
         }
 
+        if (Mathf.Abs(eyes.transform.localPosition.x - goalEyesX) >= 0.1f)
+        {
+            float a = goalEyesX - eyes.transform.localPosition.x;
+        }
 
+
+        eyes.transform.localPosition = new Vector3(goalEyesX, 0.2f, 0);
     }
 
     private void FixedUpdate()
@@ -154,31 +162,41 @@ public class PlayerMovements : MonoBehaviour
             }
         }
 
-        if (VisualEffectObject != null)
+        if (_rb.velocity.x > 1f)
+        {
+            goalEyesX = 0.25f;
+        } 
+        else if (_rb.velocity.x < -1f)
+        {
+            goalEyesX = -0.25f;
+            Debug.Log("Right" + _rb.velocity.x);
+        }
+
+        if (visualEffectObject != null)
         {
             if (vfxTime <= -0.15f)
             {
-                VisualEffectObject.GetComponent<VisualEffect>().SetFloat("Lifetime", 0);
+                visualEffectObject.GetComponent<VisualEffect>().SetFloat("Lifetime", 0);
             }
 
             if (vfxTime <= -0.65f)
             {
-                Destroy(VisualEffectObject);
-                VisualEffectObject = null;
+                Destroy(visualEffectObject);
+                visualEffectObject = null;
             }
         }
 
-        if (VisualEffectObjectBis != null)
+        if (visualEffectObjectBis != null)
         {
             if (vfxTimeBis <= -0.15f)
             {
-                VisualEffectObjectBis.GetComponent<VisualEffect>().SetFloat("Lifetime", 0);
+                visualEffectObjectBis.GetComponent<VisualEffect>().SetFloat("Lifetime", 0);
             }
 
             if (vfxTimeBis <= -0.65f)
             {
-                Destroy(VisualEffectObjectBis);
-                VisualEffectObjectBis = null;
+                Destroy(visualEffectObjectBis);
+                visualEffectObjectBis = null;
             }
         }
 
@@ -207,6 +225,7 @@ public class PlayerMovements : MonoBehaviour
     {
         if (lastGroundTime >= -coyoteTime && !isJumping)
         {
+            _rb.velocity = new Vector2(_rb.velocity.x, 0);
             _rb.AddForce(jumpForce * Vector2.up, ForceMode2D.Impulse);
             lastJumpTime = 0;
             isJumping = true;
@@ -228,17 +247,17 @@ public class PlayerMovements : MonoBehaviour
 
     private void PlayVFX()
     {
-        if (vfxTime <= -0.65f && VisualEffectObject == null)
+        if (vfxTime <= -0.65f && visualEffectObject == null)
         {
             vfxTime = 0;
-            VisualEffectObject = Instantiate(vfxPrefab, transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
-            VisualEffectObject.GetComponent<VisualEffect>().SetFloat("Lifetime", 0.5f);
+            visualEffectObject = Instantiate(vfxPrefab, transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
+            visualEffectObject.GetComponent<VisualEffect>().SetFloat("Lifetime", 0.5f);
         }
-        else if (vfxTimeBis <= -0.65f && VisualEffectObjectBis == null)
+        else if (vfxTimeBis <= -0.65f && visualEffectObjectBis == null)
         {
             vfxTimeBis = 0;
-            VisualEffectObjectBis = Instantiate(vfxPrefab, transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
-            VisualEffectObjectBis.GetComponent<VisualEffect>().SetFloat("Lifetime", 0.5f);
+            visualEffectObjectBis = Instantiate(vfxPrefab, transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
+            visualEffectObjectBis.GetComponent<VisualEffect>().SetFloat("Lifetime", 0.5f);
         }
     }
 }

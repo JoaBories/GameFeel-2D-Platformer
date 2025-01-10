@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\User\\Documents\\GitHub\\GameFeelExercise\\",
+  "WorkspaceRootPath": "C:\\Users\\joa.bories\\GameFeelExercise\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E3C422FF-C1DE-32E3-CE6F-2227EC2A2AB4}|Assembly-CSharp.csproj|c:\\users\\user\\documents\\github\\gamefeelexercise\\assets\\script\\playermovements.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E3C422FF-C1DE-32E3-CE6F-2227EC2A2AB4}|Assembly-CSharp.csproj|c:\\users\\joa.bories\\gamefeelexercise\\assets\\script\\playermovements.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E3C422FF-C1DE-32E3-CE6F-2227EC2A2AB4}|Assembly-CSharp.csproj|solutionrelative:assets\\script\\playermovements.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -23,11 +23,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "PlayerMovements.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\GameFeelExercise\\Assets\\Script\\PlayerMovements.cs",
+              "DocumentMoniker": "C:\\Users\\joa.bories\\GameFeelExercise\\Assets\\Script\\PlayerMovements.cs",
               "RelativeDocumentMoniker": "Assets\\Script\\PlayerMovements.cs",
-              "ToolTip": "C:\\Users\\User\\Documents\\GitHub\\GameFeelExercise\\Assets\\Script\\PlayerMovements.cs",
+              "ToolTip": "C:\\Users\\joa.bories\\GameFeelExercise\\Assets\\Script\\PlayerMovements.cs",
               "RelativeToolTip": "Assets\\Script\\PlayerMovements.cs",
-              "ViewState": "AgIAANUAAAAAAAAAAAAhwO8AAABnAAAAAAAAAA==",
+              "ViewState": "AQIAAFwAAAAAAAAAAAAIwHkAAABBAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-08T17:39:22.678Z",
               "EditorCaption": ""
@@ -37,9 +37,9 @@
               "DocumentIndex": 1,
               "Title": "Movements.cs",
               "DocumentMoniker": "C:\\Users\\joa.bories\\Documents\\git\\GameFeelExercise\\Assets\\Script\\Movements.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\joa.bories\\Documents\\git\\GameFeelExercise\\Assets\\Script\\Movements.cs",
+              "RelativeDocumentMoniker": "..\\Documents\\git\\GameFeelExercise\\Assets\\Script\\Movements.cs",
               "ToolTip": "C:\\Users\\joa.bories\\Documents\\git\\GameFeelExercise\\Assets\\Script\\Movements.cs",
-              "RelativeToolTip": "..\\..\\..\\..\\joa.bories\\Documents\\git\\GameFeelExercise\\Assets\\Script\\Movements.cs",
+              "RelativeToolTip": "..\\Documents\\git\\GameFeelExercise\\Assets\\Script\\Movements.cs",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-07T10:00:54.949Z"
             }
