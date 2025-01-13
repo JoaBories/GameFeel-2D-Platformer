@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.VFX;
@@ -214,7 +215,7 @@ public class PlayerMovements : MonoBehaviour
             _rb.AddForce(Vector2.right * -amount, ForceMode2D.Impulse);
         }
 
-        if (_rb.velocity.y < 0.5) _rb.gravityScale = gravityScale * fallGravityMultiplier;
+        if (_rb.velocity.y < 0.5f) _rb.gravityScale = gravityScale * fallGravityMultiplier;
         else _rb.gravityScale = gravityScale;
     }
 
